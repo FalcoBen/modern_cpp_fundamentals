@@ -27,7 +27,6 @@ class Bureaucrat
             public :
                 virtual const char* what() const throw();
                 ~GradeTooHighException() throw();
-
         };
 
         class GradeTooLowException : public std::exception
@@ -35,7 +34,6 @@ class Bureaucrat
             public :
                 virtual const char* what() const throw();
                 ~GradeTooLowException() throw();
-
         };
         void signForm(AForm& form_obj);
         void executeForm(AForm const & form) const;

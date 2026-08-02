@@ -19,6 +19,7 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationF
 {
     if(this != &src)
     {
+        this->_target = src._target;
         AForm::operator=(src);
     }
     return (*this);
@@ -26,10 +27,6 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationF
 
 ShrubberyCreationForm::~ShrubberyCreationForm()
 {
-}
-std::string ShrubberyCreationForm::getTarget() const
-{
-    return _target;
 }
 
 void ShrubberyCreationForm::execute(Bureaucrat const & executor) const 

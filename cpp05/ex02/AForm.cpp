@@ -17,6 +17,18 @@ const char* AForm::FormNotSignedException::what() const throw()
     return "Cannot execute because the form is not signed !!";
 }
 
+AForm::GradeTooHighException::~GradeTooHighException() throw()
+{
+}
+
+AForm::GradeTooLowException::~GradeTooLowException() throw()
+{
+}
+
+AForm::FormNotSignedException::~FormNotSignedException() throw()
+{
+}
+
 int AForm::checkGradeForm(int grade)
 {
     if(grade > 150)
@@ -26,22 +38,18 @@ int AForm::checkGradeForm(int grade)
     return grade;
 }
 
-/*----------------------------------------------------*/
 AForm::AForm() : _name_form("default"), _is_signed(false), _grade_to_sign(2), _grade_to_execute(2) 
 {
-    // std::cerr << "[BASE AForm] Default constructor called" << std::endl;
 }
 
 AForm::AForm(const std::string& name, int GradeToSign, int GradeToExecute) : _name_form(name), 
                 _is_signed(false), _grade_to_sign(checkGradeForm(GradeToSign)), _grade_to_execute(checkGradeForm(GradeToExecute)) 
 {
-    // std::cerr << "[BASE AForm] Parametriezed constructor called" << std::endl;
 }
 
 AForm::AForm(const AForm& src) : _name_form(src._name_form), _is_signed(src._is_signed), 
                 _grade_to_sign(src._grade_to_sign), _grade_to_execute(src._grade_to_execute) 
 {
-    // std::cerr << "[BASE AForm] Copy constructor called" << std::endl;
 }
 
 AForm& AForm::operator=(const AForm& src)
@@ -50,13 +58,11 @@ AForm& AForm::operator=(const AForm& src)
     {
         this->_is_signed = src._is_signed;
     }
-    // std::cerr << "[BASE AForm] Operator Copy Assignment called" << std::endl;
     return (*this);
 }
 
 AForm::~AForm()
 {
-    // std::cerr << "[BASE AForm] Destructor called" << std::endl;
 }
 
 std::string  AForm::getNameForm() const
@@ -92,15 +98,7 @@ std::ostream& operator<<(std::ostream& out, const AForm& Aform_obj)
     else
         result = "No";
 
-    out << "<" << Aform_obj.getNameForm() << ">, " << "Aform grade to sign = " << Aform_obj.getGradeToSign() \
+    out << Aform_obj.getNameForm() << ", " << "Aform grade to sign = " << Aform_obj.getGradeToSign() \
         <<   " Aform grade to execute = " << Aform_obj.getGradeToExecute() << " status " << result << std::endl;
     return out;
 }
-
-// void AForm::executAction(Bureaucrat const & executor)
-// {
-//     if(!getIsSigned())
-//         throw (AForm::FormNotSignedException());
-//     if(executor.getGrade() > this->getGradeToExecute())
-//         throw (AForm::GradeTooLowException());
-// }
