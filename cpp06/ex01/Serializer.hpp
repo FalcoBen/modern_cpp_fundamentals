@@ -3,7 +3,15 @@
 
 #include <iostream>
 #include <string>
-#include <stdint.h>
+#include <cstdint>
+
+typedef struct s_Data
+{
+    std::string name;
+    std::string last_name;
+    int id;
+} Data;
+
 
 class Serializer
 {
@@ -14,8 +22,8 @@ class Serializer
         Serializer(const Serializer& src);
         Serializer& operator=(const Serializer& src);
         ~Serializer();
-        // static uintptr_t serialize(Data* ptr);
-        // Data* deserialize(uintptr_t raw);
+        static std::uintptr_t serialize(Data* ptr);
+        static Data* deserialize(std::uintptr_t raw);
 };
 
 
