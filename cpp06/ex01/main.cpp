@@ -8,10 +8,10 @@ int main()
     test->id = 1337;
     test->last_name = "benallal";
 
-    std::cout << "Original Data address: " << &test << std::endl;
+    std::cout << "Original Data address:    " << test << std::endl;
 
     uintptr_t raw = Serializer::serialize(test);
-    std::cout << "Serialized (uintptr_t): " << raw << " (Hex: 0x" << std::hex << raw << std::dec << ")" << std::endl;
+    std::cout << "Serialized (uintptr_t):  " << raw << " (Hex: 0x" << std::hex << raw << std::dec << ")" << std::endl;
 
     Data* ptr = Serializer::deserialize(raw);
     std::cout << "Deserialized Data address: " << ptr << std::endl;
@@ -26,5 +26,6 @@ int main()
         std::cout << "ERROR: Address mismatch!" << std::endl;
     }
 
+    delete test;
     return 0;
 }
