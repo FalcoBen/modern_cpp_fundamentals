@@ -41,8 +41,7 @@ enum InputType {
 
 bool is_it_char(const std::string& str)
 {
-    size_t len = str.length();
-    if (len == 1 && std::isalpha(static_cast<unsigned char>(str[0])))
+    if (str.length() == 1 && !std::isdigit(static_cast<unsigned char>(str[0])))
         return true;
     return false;
 }
@@ -187,25 +186,27 @@ void api_char(const std::string& input)
 }
 void api_int(const std::string& input)
 {
+    errno = 0;
     long value = std::strtol(input.c_str(), NULL, 10);
-    int nb = static_cast<int>(value);
-
     std::cout << "char: ";
-    if (nb < 0 || nb > 127)
+    if (errno == ERANGE || value < 0 || value > 127)
         std::cout << "impossible";
-    else if (!std::isprint(static_cast<unsigned char>(nb)))
+    else if (!std::isprint(static_cast<unsigned char>(value)))
         std::cout << "Non displayable";
     else
-        std::cout << "'" << static_cast<char>(nb) << "'";
+        std::cout << "'" << static_cast<char>(value) << "'";
     std::cout << std::endl;
 
-    std::cout << "int: " << nb << std::endl;
+    std::cout << "int: ";
+    if (errno == ERANGE || value < INT_MIN || value > INT_MAX)
+        std::cout << "impossible";
+    else
+        std::cout << static_cast<int>(value);
+    std::cout << std::endl;
 
-    float f = static_cast<float>(nb);
-    double d = static_cast<double>(nb);
-
+    double d = std::strtod(input.c_str(), NULL);
     std::cout << std::fixed << std::setprecision(1);
-    std::cout << "float: " << f << "f" << std::endl;
+    std::cout << "float: " << static_cast<float>(d) << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
 }
 
@@ -232,7 +233,6 @@ void api_float(const std::string& input)
 
     std::cout << std::fixed << std::setprecision(1);
     std::cout << "float: " << ff << "f" << std::endl;
-
     double d = static_cast<double>(ff);
     std::cout << "double: " << d << std::endl;
 }
