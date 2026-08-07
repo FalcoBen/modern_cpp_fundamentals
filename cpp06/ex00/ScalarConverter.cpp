@@ -14,8 +14,8 @@ ScalarConverter::ScalarConverter()
 
 ScalarConverter::ScalarConverter(const ScalarConverter& src)
 {
-    (void) src;
-
+    // (void) src;// need to check agains the subject i think its  says use one type of casting 
+    static_cast<void>(src);
 }
 ScalarConverter& ScalarConverter::operator=(const ScalarConverter& src)
 {
@@ -180,7 +180,7 @@ void api_char(const std::string& input)
 
     std::cout << std::endl;
     std::cout << "int: " << i << std::endl;
-    std::cout << std::fixed << std::setprecision(1);
+    std::cout << std::fixed << std::setprecision(6);
     std::cout << "float: " << f << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
 }
@@ -189,7 +189,7 @@ void api_int(const std::string& input)
     errno = 0;
     long value = std::strtol(input.c_str(), NULL, 10);
     std::cout << "char: ";
-    if (errno == ERANGE || value < 0 || value > 127)
+    if (errno == ERANGE || value < CHAR_MIN || value > CHAR_MAX)
         std::cout << "impossible";
     else if (!std::isprint(static_cast<unsigned char>(value)))
         std::cout << "Non displayable";
@@ -205,7 +205,7 @@ void api_int(const std::string& input)
     std::cout << std::endl;
 
     double d = std::strtod(input.c_str(), NULL);
-    std::cout << std::fixed << std::setprecision(1);
+    std::cout << std::fixed << std::setprecision(6);
     std::cout << "float: " << static_cast<float>(d) << "f" << std::endl;
     std::cout << "double: " << d << std::endl;
 }
@@ -214,8 +214,17 @@ void api_float(const std::string& input)
 {
     float ff = std::strtof(input.c_str(), NULL);
 
+    if (std::isnan(ff) || std::isinf(ff))
+    {
+        std::cout << "char: impossible" << std::endl;
+        std::cout << "int: impossible" << std::endl;
+        std::cout << "float: impossible" << std::endl;
+        std::cout << "double: impossible" << std::endl;
+        return;
+    }
+
     std::cout << "char: ";
-    if (std::isnan(ff) || std::isinf(ff) || ff < 0 || ff > 127)
+    if (ff < CHAR_MIN || ff > CHAR_MAX)
         std::cout << "impossible";
     else if (!std::isprint(static_cast<unsigned char>(ff)))
         std::cout << "Non displayable";
@@ -224,25 +233,32 @@ void api_float(const std::string& input)
     std::cout << std::endl;
 
     std::cout << "int: ";
-    if (std::isnan(ff) || std::isinf(ff) ||
-        ff < INT_MIN || ff > INT_MAX)
+    if (ff < INT_MIN || ff > INT_MAX)
         std::cout << "impossible";
     else
         std::cout << static_cast<int>(ff);
     std::cout << std::endl;
 
-    std::cout << std::fixed << std::setprecision(1);
+    std::cout << std::fixed << std::setprecision(6);
     std::cout << "float: " << ff << "f" << std::endl;
-    double d = static_cast<double>(ff);
-    std::cout << "double: " << d << std::endl;
+    std::cout << "double: " << static_cast<double>(ff) << std::endl;
 }
 
 void api_double(const std::string& input)
 {
     double dd = std::strtod(input.c_str(), NULL);
 
+    if (std::isnan(dd) || std::isinf(dd))
+    {
+        std::cout << "char: impossible" << std::endl;
+        std::cout << "int: impossible" << std::endl;
+        std::cout << "float: impossible" << std::endl;
+        std::cout << "double: impossible" << std::endl;
+        return;
+    }
+
     std::cout << "char: ";
-    if (std::isnan(dd) || std::isinf(dd) || dd < 0 || dd > 127)
+    if (dd < CHAR_MIN || dd > CHAR_MAX)
         std::cout << "impossible";
     else if (!std::isprint(static_cast<unsigned char>(dd)))
         std::cout << "Non displayable";
@@ -251,26 +267,15 @@ void api_double(const std::string& input)
     std::cout << std::endl;
 
     std::cout << "int: ";
-    if (std::isnan(dd) || std::isinf(dd) ||
-        dd < INT_MIN || dd > INT_MAX)
+    if (dd < INT_MIN || dd > INT_MAX)
         std::cout << "impossible";
     else
         std::cout << static_cast<int>(dd);
     std::cout << std::endl;
 
-    std::cout << "float: ";
-
-    if (std::isnan(dd) || std::isinf(dd))
-        std::cout << "impossible";
-    else
-        std::cout << std::fixed << std::setprecision(1)
-                  << static_cast<float>(dd) << "f";
-
-    std::cout << std::endl;
-
-    std::cout << "double: "
-              << std::fixed << std::setprecision(1)
-              << dd << std::endl;
+    std::cout << std::fixed << std::setprecision(6);
+    std::cout << "float: " << static_cast<float>(dd) << "f" << std::endl;
+    std::cout << "double: " << dd << std::endl;
 }
 
 void api_special(const std::string& input)
