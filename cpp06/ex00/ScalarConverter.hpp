@@ -3,6 +3,16 @@
 
 #include <string>
 
+enum InputType {
+    Type_CHAR,
+    Type_INT,
+    Type_FLOAT,
+    Type_DOUBLE,
+    Type_SPECIAL,
+    Type_INVALID 
+};
+
+
 class ScalarConverter
 {
     private:
@@ -14,5 +24,7 @@ class ScalarConverter
     public:
         static void convert(const std::string& input);
 };
+
+InputType pars_input(const std::string &input);
 
 #endif
